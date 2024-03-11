@@ -3,7 +3,7 @@ Transcribe podcast episodes using OpenAI whisper.cpp. Once fetched and transcrib
 
 ## Installation
 
-Download whisper.cpp into a subdirectory (called whisper.cpp) and compile for your platform. Including GPU or CoreML support depending on what you're running on will speed things up dramatically. 
+Download whisper.cpp into a subdirectory (called whisper.cpp) and compile for your platform. Including GPU or CoreML support depending on what you're running on will speed things up dramatically. Download the models you plan to use using the scripts in the models subdirectory of whisper.cpp and configure those in the config.py file. 
 
 ## Configuration
 
@@ -18,13 +18,18 @@ pip install -r ./requirements.txt
 
 Provided the configuration is done, running will download the available podcast episodes, transcribe them and create a metadata file of all episodes, their titles and episode numbers. Metadata and filenames are generated from the RSS XML so should work across different podcasts. 
 
-4th October 2023
+Episodes are converted to wav format using ffmpeg, then transcribed. The transcription can be configured using the ```tscript_mode``` variable which is in the config file. Documentation of that and the ```whisper_model``` variable are inline in the config. 
 
-podtoVector does not currently do updates correctly. As things stand, the raw and chunks csv files as well as the chroma.db directory must be deleted before updating. A full re-index is necessary
+## podtoVector.py
 
-fetchtoTscript.py works correctly and incrementally
+This will take the transcripts, chunk the text according to the ```max_tokens``` size set in the configuration and generate embeddings which are stored in a ChromaDB instance. The embeddings model can be configured in config.py by changing ```embeds_model```. 
 
-whoosh_index.py updates the index files correctly although for some reason they have shrunk considerably.
+TODO: FIX INCREMENTAL UPDATES OF CHROMADB - CURRENTLY INSERTS DUPELICATES
 
-Need to integrate the chromadb search functionaligy from podSemSearch.py into the podSearch script. The required functions have been copied over to lib_podsearch.py.
-The code from podSemSearch.py needs to be integrated now. 
+## podSemSearch.py
+
+Allows for simple tests of semantic search to be performed against the ChromaDB instance. Edit the search term directly in the script.
+
+## pod[Mistral|GPT]question.py
+
+Implements a simple RAG based Q&A using the ChromaDB embeddings and metadata. Allows for testing of different models. Requires an API key to be entered at run-time.
