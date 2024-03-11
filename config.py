@@ -57,7 +57,7 @@ final_csv=f'{csv_dir}/embeds_url_{str(max_tokens)}T.csv'
 # CHROMA
 chromadb_name=f'{pod_prefix}/chroma.db'
 chroma_collection=f'{pod_prefix}_{max_tokens}T_Collection'
-collection_metadata={"hnsw:space": "cosine", "model.max_seq_length": "240"}
+collection_metadata={"hnsw:space": "cosine", "model.max_seq_length": max_tokens}
 
 
 
