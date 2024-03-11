@@ -1,0 +1,13 @@
+openai
+tiktoken
+pandas
+numpy
+pysrt
+scikit.learn
+scipy
+whoosh
+srt
+chromadb
+ipython
+feedparser
+mistralai
